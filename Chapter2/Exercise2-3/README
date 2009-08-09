@@ -1,0 +1,16 @@
+Erlang (BEAM) emulator version 5.6.5 [source] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.6.5  (abort with ^G)
+1> c(boolean).
+{ok,boolean}
+2> boolean:b_not(false).   
+true
+3> boolean:b_and(false, true).
+false
+4> boolean:b_and(boolean:b_not(boolean:b_and(true, false)), true).
+true
+5> boolean:b_nand(true, true).
+false
+6> boolean:b_nand(false, false).
+true
+7> 
