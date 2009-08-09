@@ -1,0 +1,45 @@
+demo.erl
+
+Erlang (BEAM) emulator version 5.6.5 [source] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.6.5  (abort with ^G)
+1> c(demo).
+{ok,demo}
+2> demo:times(3,5).
+** exception error: undefined function demo:times/2
+3> double(6).
+** exception error: undefined shell command double/1
+4> demo:double(2).
+4
+5> demo:double(4).
+8
+6>
+
+-----------------------------------------------------------------------------------
+
+shapes.erl using "Other" variable
+
+Erlang (BEAM) emulator version 5.6.5 [source] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.6.5  (abort with ^G)
+1> c(shapes).
+./shapes.erl:16: Warning: variable 'Other' is unused
+{ok,shapes}
+2> % this warning occurs because it isn't a "don't care" variable
+2> % "don't care" variables starts with an underscore (u)
+2>
+
+-----------------------------------------------------------------------------------
+
+shapes.erl using "_Other" (don't care) variable
+
+Erlang (BEAM) emulator version 5.6.5 [source] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.6.5  (abort with ^G)
+1> c(shapes).
+{ok,shapes}
+2> shapes:area({square, 4}).
+16
+3> shapes:area({square, 2}).
+4
+4> 
