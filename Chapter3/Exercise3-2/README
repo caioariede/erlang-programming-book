@@ -1,0 +1,10 @@
+Erlang (BEAM) emulator version 5.6.5 [source] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.6.5  (abort with ^G)
+1> c(create).
+{ok,create}
+2> create:create(3).
+[1,2,3]
+3> create:reverse_create(3).
+[3,2,1]
+4> 
