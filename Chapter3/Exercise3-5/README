@@ -1,0 +1,14 @@
+Erlang (BEAM) emulator version 5.6.5 [source] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.6.5  (abort with ^G)
+1> c(mlist).
+{ok,mlist}
+2> mlist:filter([1,2,3,4,5], 3).
+[1,2,3]
+3> mlist:reverse([1,2,3]).
+[3,2,1]
+4> mlist:concatenate([[1,2,3], [], [4, five]]).
+[1,2,3,4,five]
+5> mlist:flatten([[1,[2,[3],[]]], [[[4]]], [5,6]]).
+[1,2,3,4,5,6]
+6> 
