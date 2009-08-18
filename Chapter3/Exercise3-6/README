@@ -1,0 +1,10 @@
+Erlang (BEAM) emulator version 5.6.5 [source] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.6.5  (abort with ^G)
+1> c(sort).
+{ok,sort}
+2> sort:quicksort([6,3,8,1,2,4,5]).
+[1,2,3,4,5,6,8]
+3> sort:mergesort([6,3,8,1,2,4,5]).
+[1,2,3,4,5,6,8]
+4> 
