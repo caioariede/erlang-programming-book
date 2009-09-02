@@ -3,6 +3,7 @@
 DIR_EBIN=$(PWD)/ebin
 DIR_SOURCE=$(PWD)/src
 DIR_INCLUDE=$(PWD)/include
+DIR_EXAMPLES=$(PWD)/examples
 
 ERLC_FLAGS=-W0 -Ddebug +debug_info
 ERLC=erlc -I $(DIR_INCLUDE) -o $(DIR_EBIN) $(ERL_FLAGS) $(DIR_SOURCE)
@@ -24,13 +25,21 @@ compile:
 	# Compile everything
 	$(ERLC)/parser/*.erl
 	$(ERLC)/compiler/*.erl
+	$(ERLC)/tests/*.erl
 
 all: compile
 
 test:
-	$(ERLC)/tests/*.erl
+	# Testing simple expression
 	$(ERL) 'arith_test:simple_expr(), halt().'
+	# Testing if statement
+	$(ERL) 'arith_test:if_expr(), halt().'
+	# Testing if..else statement
+	$(ERL) 'arith_test:ifelse_expr(), halt().'
+	# Testing variable assignment (let)
+	$(ERL) 'arith_test:let_expr(), halt().'
 
 clean:
 	rm $(DIR_PARSER)/*.erl
 	rm $(DIR_EBIN)/*.beam
+	rm $(DIR_EXAMPLES)/*.beam

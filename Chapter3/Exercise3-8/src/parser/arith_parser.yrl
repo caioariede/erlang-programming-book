@@ -1,75 +1,65 @@
-%% @Author Caio Ariede
-
 Nonterminals
     grammar
     number
-    unary
     op
-    expr
     exprs
-    if_stmt
-    if_then
-    if_else
-    let_stmt
-    variable
-    data
+    expr
+    expr_if
+    expr_match
+    expr_op
+    expr_value
     .
 
 Terminals
-    '~' '+' '-' '*' '(' ')' '='
+    '+' '-' '*' '~' '=' '(' ')'
+    integer float
+    if then else
+    let identifier
     eol
-    atom
-    if
-    integer
-    float
-    let
     .
 
 Rootsymbol
     grammar
     .
 
-grammar -> exprs : ['$1'].
-grammar -> exprs eol : ['$1'].
-grammar -> eol exprs : ['$1'].
-grammar -> exprs eol grammar : ['$1'|'$3'].
+grammar -> exprs : '$1'.
 
-exprs -> expr     : '$1'.
-exprs -> if_stmt  : '$1'.
-exprs -> let_stmt : '$1'.
+exprs -> expr : ['$1']. 
+exprs -> expr eol : ['$1'].
+exprs -> eol exprs : ['$2'].
+exprs -> expr eol exprs : ['$1'|'$3'].
 
-if_stmt -> if expr if_then expr : {'if', '$2', '$4'}.
-if_stmt -> if expr if_then expr if_else expr : {'ifelse', '$2', '$4', '$6'}.
+expr -> expr_if : '$1'.
 
-let_stmt -> let variable '=' expr : {'$2', '$4'}.
+expr_if -> if expr_match 'then' expr_match : {'if', line_of('$1'), '$2', '$4'}.
+expr_if -> if expr_match 'then' expr_match 'else' expr_match : {'ifelse', line_of('$1'), '$2', '$4', '$6'}.
+expr_if -> expr_match : '$1'.
 
-number -> integer : {'num', value_of('$1')}.
-number -> float : {'num', value_of('$1')}.
+expr_match -> let identifier '=' expr_match : {'$2', '$4'}.
+expr_match -> expr_op : '$1'.
 
-number -> '-' integer : {'minus', {'num', value_of('$2')}}.
-number -> '-' float : {'minus', {'num', value_of('$2')}}.
+expr_op -> expr_op op expr_op : {'$2', '$1', '$3'}.
+expr_op -> '(' expr_op ')' : '$2'.
+expr_op -> '~' expr_op : {{'minus', line_of('$1')}, '$2'}.
+expr_op -> expr_value : '$1'.
 
-expr -> data : '$1'.
-expr -> data op data : {'$2', '$1', '$3'}.
-expr -> expr op expr : {'$2', '$1', '$3'}.
-expr -> '(' expr ')' : '$2'.
-expr -> unary expr : {'$1', '$2'}.
+expr_value -> identifier : '$1'.
+expr_value -> number : '$1'.
 
-unary -> '~' : 'minus'.
+op -> '+' : {'plus',  line_of('$1')}.
+op -> '-' : {'minus', line_of('$1')}.
+op -> '*' : {'multi', line_of('$1')}.
 
-op -> '+' : 'plus'.
-op -> '-' : 'minus'.
-op -> '*' : 'multi'.
+number -> integer : {'num', line_of('$1'), value_of('$1')}.
+number -> float : {'num', line_of('$1'), value_of('$1')}.
 
-data -> number : '$1'.
-data -> variable : '$1'.
-
-% define some atoms as tokens
-if_then -> atom : '$1'.
-if_else -> atom : '$1'.
-variable -> atom : {'var', value_of('$1')}.
+number -> '-' integer : {'num', line_of('$2'), -value_of('$2')}.
+number -> '-' float : {'num', line_of('$2'), -value_of('$2')}.
 
 Erlang code.
 
 value_of(Token) ->
     element(3, Token).
+
+line_of(Token) ->
+    element(2, Token).
