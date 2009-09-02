@@ -1,0 +1,17 @@
+#!/bin/bash
+
+EBIN_DIR=$(dirname `readlink -f $0`)/../ebin
+
+if [ $# -lt 1 ]; then
+    echo "No arguments passed"
+else
+    if [ -f $1 ]; then
+        if [ -f $EBIN_DIR/arithc.beam ]; then
+            erl -pa $EBIN_DIR -noshell -eval "arithc:file(\"$1\"), halt()."
+        else
+            echo "Compiler not found. Run make before."
+        fi
+    else
+        echo "File: $1 does not exist"
+    fi
+fi

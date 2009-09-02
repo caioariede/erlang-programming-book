@@ -1,0 +1,14 @@
+Compile
+---------------------------------
+
+Type:
+
+../bin/arithc <file>.ar
+
+Example:
+
+../bin/arithc variable.ar
+
+To run, type:
+
+erl -noshell -eval 'io:format("~w~n", [variable:main()]), halt().'
