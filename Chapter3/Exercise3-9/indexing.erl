@@ -1,5 +1,11 @@
 -module(indexing).
--export([text_to_raw/1,raw_to_document/1,line_to_words/1]).
+-export([
+    text_to_raw/1,
+    raw_to_document/1,
+    line_to_words/1,
+    index/2,
+    index/3,
+    index_prettier/3]).
 
 -define(MAX_LINE_LEN, 100).
 
@@ -43,8 +49,38 @@ line_to_words([C|Line], Acc) when (C == $.) or (C == $,) ->
 line_to_words([C|Line], Acc) ->
     line_to_words(Line, Acc ++ [C]).
 
-%%index([Line, Document]) ->
-%%    index_line(Line, Acc);
-%%
-%%index_line(Line, Acc) ->
-%%    WordsLine = line_to_words(Line)
+index(Filename, Word) ->
+    Raw = text_to_raw(Filename),
+    [Current | Lines] = raw_to_document(Raw),
+    case lists:keysearch(Word, 1, index(Lines, Current, 1, [])) of
+        {value, Index} -> Index;
+        _ -> {Word, []}
+    end.
+
+index(pretty_print, Filename, Word) ->
+    {_, Index} = index(Filename, Word),
+    index_prettier(Index, 0, Word ++ " ").
+
+index_prettier([], _, Acc) ->
+    Acc;
+
+%index_prettier([I|T], Previous, Acc) ->
+%; // TODO
+
+index([], Current, LineCount, Acc) ->
+    index_words(Current, LineCount, Acc);
+
+index([Next | Lines], Current, LineCount, Acc) ->
+    index(Lines, Next, LineCount + 1, index_words(Current, LineCount, Acc)).
+
+index_words([], _, Index) ->
+    Index;
+
+index_words([Word | Words], LineCount, Acc) ->
+    NewIndex = case lists:keysearch(Word, 1, Acc) of
+        {value, {_, Value}} ->
+            lists:keyreplace(Word, 1, Acc, {Word, [LineCount | Value]});
+        _ ->
+            [{Word, [LineCount, -1]} | Acc]
+    end,
+    index_words(Words, LineCount, NewIndex).
