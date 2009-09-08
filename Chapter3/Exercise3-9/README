@@ -1,0 +1,17 @@
+Erlang (BEAM) emulator version 5.6.5 [source] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.6.5  (abort with ^G)
+1> c(indexing).
+{ok,indexing}
+2> indexing:index("sample_text", "sit").
+[1,5,8]
+3> indexing:index(pretty_print, "sample_text", "sit").
+sit 1,5,8
+ok
+4> indexing:index(pretty_print, "sample_text", "Lorem").
+Lorem 1-2
+ok
+5> indexing:index("sample_text", "Lorem").              
+[1,1,2,2]
+6> 
+
