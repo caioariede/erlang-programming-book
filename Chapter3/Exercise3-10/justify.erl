@@ -44,7 +44,7 @@ count_chars([]) ->
     0;
 
 count_chars(Doc) ->
-    lists:foldl(fun(Word, Sum) -> length(Word) + Sum end, 0, Doc).
+    lists:foldl(fun(Word, Sum) -> length(Word) + 1 + Sum end, 0, Doc) - 1.
 
 max_chars_per_line([], Max) ->
     Max;
@@ -73,20 +73,29 @@ justify_doc([], _, Acc) ->
 
 justify_doc([Line|T], Max, Acc) ->
     Fill = Max - count_chars(Line),
-    justify_doc(T, Max, [justify_line(Line, Fill, []) | Acc]).
+    if Fill > 0 ->
+        WordsInLine = length(Line),
+        SpacesPerWord = trunc(WordsInLine / Fill),
+        justify_doc(T, Max, [justify_line(Line, SpacesPerWord, Fill, []) | Acc]);
+    true ->
+        justify_doc(T, Max, [justify_line(Line, 0, 0, []) | Acc])
+    end.
 
-justify_line([], _, Acc) ->
+justify_line([], _, _, Acc) ->
     lists:reverse(Acc);
 
-justify_line([Word|T], 0, Acc) ->
-    justify_line(T, 0, [Word ++ [$ ] | Acc]);
+justify_line([Word|T], _, 0, Acc) ->
+    justify_line(T, 0, 0, [Word ++ [$ ] | Acc]);
 
-justify_line([Word|T], Fill, Acc) ->
-    SpacesToFill = length(T) / Fill,
-    Trunc = trunc(SpacesToFill),
-    Spaces = if Trunc == SpacesToFill -> Trunc; true -> Trunc + 1 end,
-    RestFill = if Spaces > Fill -> 0; true -> Fill - Spaces end,
-    justify_line(T, RestFill, [Word ++ lists:duplicate(Spaces, $ ) | Acc]).
+justify_line([Word|T], Count, Total, Acc) ->
+    if Total =< Count ->
+        Resting = 0,
+        Spaces = Total;
+    true ->
+        Resting = Total - Count,
+        Spaces = Count
+    end,
+    justify_line(T, Spaces, Resting, [Word ++ lists:duplicate(Spaces + 1, $ ) | Acc]).
 
 justify_print([]) ->
     ok;

@@ -1,0 +1,26 @@
+Erlang (BEAM) emulator version 5.6.5 [source] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.6.5  (abort with ^G)
+1> c(justify).
+{ok,justify}
+2> justify:justify(sample_text).
+Lorem ipsum dolor sit amet, Lorem consectetur adipiscing elit. 
+ok
+3> justify:justify(sample_text2).
+Lorem  ipsum  dolor  sit  amet,  Lorem consectetur adipiscing elit. 
+Donec   id justo et neque tincidunt tincidunt. Lorem Nunc elementum 
+faucibus  enim,  ac  imperdiet  orci  ultricies  non.  Curabitur eu 
+odio  odio  Lorem.  Proin  consectetur  massa eget sapien venenatis 
+fermentum.    Etiam facilisis suscipit est ac ultricies. Fusce nibh 
+libero, iaculis in aliquet a, porttitor vel nulla. Sed condimentum, 
+enim   quis   accumsan scelerisque, magna ligula iaculis nisi, eget 
+tristique    leo nunc ut diam. Fusce vulputate tellus sit amet diam 
+luctus   et  adipiscing est tincidunt. Aenean pellentesque faucibus 
+neque  sed dignissim. Praesent ac nulla eget arcu porttitor ornare. 
+Sed   ligula libero, gravida id molestie a, malesuada vitae lectus. 
+Phasellus  scelerisque  risus  aliquam  purus  pretium  quis tempor 
+felis  mattis.  Pellentesque  sit  amet  blandit  dolor. Quisque at 
+tortor  nisl.  Aliquam  eget  egestas  augue.  Vestibulum tristique 
+ligula   est.   Nam vehicula risus at quam ultricies blandit Lorem. 
+ok
+4> 
